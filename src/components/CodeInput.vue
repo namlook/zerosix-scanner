@@ -1,13 +1,8 @@
 
 <template>
   <div>
-    <v-text-field
-      name="code"
-      label="Entrez le code promo"
-      v-model="code"
-      @keyup.enter.native="submit"
-      :rules="rules" />
-    <v-btn class="green green--text" outline @click.native="submit" :disabled="!code">vérifier</v-btn>
+    <v-text-field name="code" label="Entrez le code promo" v-model="code" @keyup.enter.native="submit" :rules="rules" />
+    <v-btn class="green green--text" outline @click.native="submit" v-if="codeCorrect">vérifier</v-btn>
   </div>
 </template>
 
@@ -17,12 +12,17 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import { State } from 'vuex-class'
 
-@Component({})
+@Component
 export default class CodeInput extends Vue {
   code: string = ''
   rules = [
-    (value) => /^[0-9A-Z]*$/.test(value) || "uniquement des chiffres ou des lettres non accentuées"
+    (value: string): boolean | string => /^[0-9A-Z]*$/.test(value) || "uniquement des chiffres ou des lettres non accentuées"
   ]
+
+  get codeCorrect() {
+    const badCode = (rule) => rule(this.code) !== true
+    return this.code && !this.rules.filter(badCode).length
+  }
 
   submit() {
     this.$emit('submit', this.code)

@@ -1,29 +1,3 @@
-<template>
-  <v-app id="app">
-    <v-toolbar fixed class="green darken-1">
-      <v-toolbar-title>Scanner Zerosix</v-toolbar-title>
-      <v-btn @click.native="reset" icon light>
-        <v-icon>refresh</v-icon>
-      </v-btn>
-    </v-toolbar>
-    <main>
-      <v-container fluid class="text-xs-center">
-        <!--v-router-->
-        <!--<PhotoUpload @change="uploadPhoto" v-if="!file" />-->
-        <CodeInput @submit="checkCode" v-if="displayCodeInput" />
-        <v-progress-circular v-else-if="loading" indeterminate :width="1" size="240" class="green--text">vérifiation en cours</v-progress-circular>
-        <VoucherInfos v-else-if="voucher && voucher.code" :voucher="voucher" />
-        <!--<img src="../assets/logo.png">    -->
-      </v-container>
-      <v-snackbar :timeout="3000" :success="context === 'success'" :info="context === 'info'" :warning="context === 'warning'" :error="context === 'error'" :primary="context === 'primary'" :secondary="context === 'secondary'" :multi-line="true"  v-model="snackbar">
-        {{ snackbarText }}
-        <v-btn flat @click.native="snackbar = false">Close</v-btn>
-      </v-snackbar>
-    </main>
-  </v-app>
-</template>
-
-<script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
@@ -66,7 +40,9 @@ export default class App extends Vue {
     setTimeout(() => {
       this.code = code
       this.loading = false
+      console.log(voucherData)
       this.voucher = voucherData[code] || {} // fetch the voucher
+      console.log('_---', this.voucher)
 
       if (this.code && !this.voucher.code) {
         this.showSnackbar('Aucun code trouvé', 'error')
@@ -93,6 +69,3 @@ export default class App extends Vue {
   }
 
 }
-</script>
-
-<style src="vuetify/dist/vuetify.min.css"></style>
