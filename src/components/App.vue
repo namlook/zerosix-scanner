@@ -9,16 +9,16 @@
     <main>
       <v-container fluid class="text-xs-center">
         <!--v-router-->
-        <!--<PhotoUpload @change="uploadPhoto" v-if="!file" />-->
-        <CodeInput @submit="checkCode" v-if="displayCodeInput" />
-        <v-progress-circular v-else-if="loading" indeterminate :width="1" size="240" class="green--text">vérifiation en cours</v-progress-circular>
-        <VoucherInfos v-else-if="voucher && voucher.code" :voucher="voucher" />
+        <v-progress-circular v-if="loading" indeterminate :width="1" size="240" class="green--text">vérifiation en cours</v-progress-circular>
+        <div v-if="!loading && !voucher">
+          <PhotoUpload @change="ocrImage" v-if="!loading && !voucher" />
+          ou
+          <CodeInput @submit="checkCode" v-if="!loading && !voucher" />
+        </div>
+        <VoucherInfos v-else-if="voucher" :voucher="voucher" />
+        <Snackbar />
         <!--<img src="../assets/logo.png">    -->
       </v-container>
-      <v-snackbar :timeout="3000" :success="context === 'success'" :info="context === 'info'" :warning="context === 'warning'" :error="context === 'error'" :primary="context === 'primary'" :secondary="context === 'secondary'" :multi-line="true"  v-model="snackbar">
-        {{ snackbarText }}
-        <v-btn flat @click.native="snackbar = false">Close</v-btn>
-      </v-snackbar>
     </main>
   </v-app>
 </template>
@@ -26,71 +26,31 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import { State, Action } from 'vuex-class'
 
-import voucherData from '../store/data'
 
 import PhotoUpload from './PhotoUpload.vue'
 import CodeInput from './CodeInput.vue'
 import VoucherInfos from './VoucherInfos.vue'
+import Snackbar from './Snackbar.vue'
 
-type SnackbarContext = 'error' | 'info' | 'success' | 'warning' | 'primary' | 'secondary'
 
 @Component({
   components: {
     PhotoUpload,
     CodeInput,
     VoucherInfos,
+    Snackbar
   }
 })
 export default class App extends Vue {
-  file: File = null
-  code: string = ''
-  loading: boolean = false
-  context: SnackbarContext = 'error'
-  snackbar: boolean = false
-  snackbarText: string = ''
+  file: File
 
-  voucher = null
-
-  get displayCodeInput() {
-    if (this.loading) {
-      return false
-    } else if (this.voucher && this.voucher.code) {
-      return false
-    }
-    return true
-  }
-
-  checkCode(code: string) {
-    this.loading = true
-    setTimeout(() => {
-      this.code = code
-      this.loading = false
-      this.voucher = voucherData[code] || {} // fetch the voucher
-
-      if (this.code && !this.voucher.code) {
-        this.showSnackbar('Aucun code trouvé', 'error')
-      }
-    }, 500)
-  }
-
-  showSnackbar(message: string, context: SnackbarContext) {
-    this.snackbarText = message
-    this.context = context
-    this.snackbar = true
-  }
-
-  reset() {
-    this.code = ''
-    this.voucher = null
-  }
-
-  uploadPhoto(file: File) {
-    this.file = file
-    // const file = files[0]
-    // const data = new FormData()
-    // data.append('files[]', file, file.name)
-  }
+  @State loading
+  @State voucher
+  @Action checkCode
+  @Action ocrImage
+  @Action reset
 
 }
 </script>

@@ -1,7 +1,6 @@
 
 <template>
   <div>
-    <!--https://vuetifyjs.com/static/doc-images/cards/girl.jpg-->
     <v-card>
       <v-card-row :img="voucher.imageUrl">
         <v-card-title style="background: rgba(0, 0, 0, .35)" class="white--text pa-5">
