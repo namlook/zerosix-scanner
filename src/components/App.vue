@@ -44,14 +44,11 @@ import Snackbar from './Snackbar.vue'
   }
 })
 export default class App extends Vue {
-  file: File
-
   @State loading
   @State voucher
   @Action checkCode
   @Action ocrImage
   @Action reset
-
 }
 </script>
 

@@ -1,5 +1,5 @@
 
-import { Voucher } from './index'
+import { Voucher } from '../interfaces'
 
 const data: Voucher[] = [
   {

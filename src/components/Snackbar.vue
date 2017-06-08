@@ -11,10 +11,12 @@ import Component from 'vue-class-component'
 import { Watch } from 'vue-property-decorator'
 import { State, Action } from 'vuex-class'
 
-@Component
-export default class App extends Vue {
+import { Snackbar } from '../interfaces'
 
-  @State snackbar
+@Component
+export default class SnackbarComponent extends Vue {
+
+  @State snackbar: Snackbar
   @Action toggleSnackbar
 
   get display(): boolean {

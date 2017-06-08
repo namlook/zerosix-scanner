@@ -7,84 +7,17 @@ import Vuex from 'vuex'
 Vue.use(Vuex) 
 
 import voucherData from './data'
+import { Voucher, Snackbar } from '../interfaces'
 
-export type SnackbarContext = 'error' | 'info' | 'success' | 'warning' | 'primary' | 'secondary'
+import { extractCodeFromImage } from './utils'
 
-export interface Snackbar {
-  message: string
-  context: SnackbarContext
-  display: boolean
-  timeout: number
-}
+import { SET_LOADING, TOGGLE_SNACKBAR, UPDATE_SNACKBAR, UPDATE_VOUCHER, RESET } from './constants'
 
-export interface Voucher {
-  code: string
-  name: string
-  description: string
-  value: number | null
-  valueUnit: string | null
-  legalNotices: string
-  imageUrl: string
-  contact: {
-    firstName: string
-    lastName: string
-  },
-  used: boolean
-  expired: boolean
-  expirationDate: string
-}
 
 interface State {
   voucher: Voucher | null
   loading: boolean
   snackbar: Snackbar
-}
-
-import axios from 'axios'
-
-import { 
-  SET_LOADING,
-  TOGGLE_SNACKBAR,
-  UPDATE_SNACKBAR,
-  UPDATE_VOUCHER,
-  RESET
- } from './mutation-types'
-
-
-async function extractCodeFromImage(file: File) {
-  const url = 'https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/ocr'
-  // const data = JSON.stringify({url: fileUrl})
-  const data = file
-  const params = { language: "unk",  detectOrientation: "true" }
-  const headers = {
-    // 'Content-Type': 'application/json',
-    'Content-Type': 'application/octet-stream',
-    'Ocp-Apim-Subscription-Key': '120c13aa28944c9f8472bfbdc600c907' }
-  
-  let response
-  try {
-    response = await axios.post(url, data, { params, headers })
-  } catch(e) {
-    console.log('xxx', e)
-  }
-
-  const results: string[] = []
-  if (response) {
-    for (let region of response.data.regions) {
-      for (let line of region.lines) {
-        for (let word of line.words) {
-          results.push(word.text)
-        }
-      }
-    }
-  }
-  const text = results.join(' ')
-  console.log('results>', text)
-
-  const match = /\/\/\/([0-9A-Z]+)\/\/\//.exec(text)
-  if (match) {
-    return match[1]
-  }
 }
 
 const initialState: State = {
