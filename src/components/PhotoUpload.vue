@@ -3,7 +3,7 @@
   <v-card flat>
     <v-card-row>
       <v-container class="text-xs-center">
-        <v-btn class="green green--text" outline @click.native="chooseFile">Ouvrir l'appareil photo</v-btn>
+        <v-btn class="green green--text" outline @click.native="chooseFile">Scannez le code promo</v-btn>
         <input type="file" ref="fileInput" @change="fileSelected">
       </v-container>
     </v-card-row>

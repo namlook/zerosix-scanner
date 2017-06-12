@@ -9996,7 +9996,7 @@ Vue$3.compile = compileToFunctions;
 
 /* harmony default export */ __webpack_exports__["default"] = (Vue$3);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(59)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(60)))
 
 /***/ }),
 /* 2 */
@@ -10705,7 +10705,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(57)
+var listToStyles = __webpack_require__(58)
 
 /*
 type StyleObject = {
@@ -11861,63 +11861,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var vue_1 = __webpack_require__(1);
-var vuetify_1 = __webpack_require__(58);
+var vuetify_1 = __webpack_require__(59);
 vue_1.default.use(vuetify_1.default);
 var vuex_1 = __webpack_require__(13);
 vue_1.default.use(vuex_1.default);
-var data_1 = __webpack_require__(44);
-var axios_1 = __webpack_require__(16);
-var mutation_types_1 = __webpack_require__(45);
-function extractCodeFromImage(file) {
-    return __awaiter(this, void 0, void 0, function () {
-        var url, data, params, headers, response, e_1, results, _i, _a, region, _b, _c, line, _d, _e, word, text, match;
-        return __generator(this, function (_f) {
-            switch (_f.label) {
-                case 0:
-                    url = 'https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/ocr';
-                    data = file;
-                    params = { language: "unk", detectOrientation: "true" };
-                    headers = {
-                        // 'Content-Type': 'application/json',
-                        'Content-Type': 'application/octet-stream',
-                        'Ocp-Apim-Subscription-Key': '120c13aa28944c9f8472bfbdc600c907'
-                    };
-                    _f.label = 1;
-                case 1:
-                    _f.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, axios_1.default.post(url, data, { params: params, headers: headers })];
-                case 2:
-                    response = _f.sent();
-                    return [3 /*break*/, 4];
-                case 3:
-                    e_1 = _f.sent();
-                    console.log('xxx', e_1);
-                    return [3 /*break*/, 4];
-                case 4:
-                    results = [];
-                    if (response) {
-                        for (_i = 0, _a = response.data.regions; _i < _a.length; _i++) {
-                            region = _a[_i];
-                            for (_b = 0, _c = region.lines; _b < _c.length; _b++) {
-                                line = _c[_b];
-                                for (_d = 0, _e = line.words; _d < _e.length; _d++) {
-                                    word = _e[_d];
-                                    results.push(word.text);
-                                }
-                            }
-                        }
-                    }
-                    text = results.join(' ');
-                    console.log('results>', text);
-                    match = /\/\/\/([0-9A-Z]+)\/\/\//.exec(text);
-                    if (match) {
-                        return [2 /*return*/, match[1]];
-                    }
-                    return [2 /*return*/];
-            }
-        });
-    });
-}
+var data_1 = __webpack_require__(45);
+var utils_1 = __webpack_require__(46);
+var constants_1 = __webpack_require__(44);
 var initialState = {
     voucher: null,
     loading: false,
@@ -11926,15 +11876,15 @@ var initialState = {
 exports.default = new vuex_1.default.Store({
     state: __assign({}, initialState),
     mutations: (_a = {},
-        _a[mutation_types_1.RESET] = function (state) {
+        _a[constants_1.RESET] = function (state) {
             for (var property in initialState) {
                 state[property] = initialState[property];
             }
         },
-        _a[mutation_types_1.SET_LOADING] = function (state, loading) {
+        _a[constants_1.SET_LOADING] = function (state, loading) {
             state.loading = loading;
         },
-        _a[mutation_types_1.TOGGLE_SNACKBAR] = function (state, shouldDisplay) {
+        _a[constants_1.TOGGLE_SNACKBAR] = function (state, shouldDisplay) {
             if (shouldDisplay === undefined) {
                 state.snackbar.display = !state.snackbar.display;
             }
@@ -11942,41 +11892,41 @@ exports.default = new vuex_1.default.Store({
                 state.snackbar.display = shouldDisplay;
             }
         },
-        _a[mutation_types_1.UPDATE_SNACKBAR] = function (state, _a) {
+        _a[constants_1.UPDATE_SNACKBAR] = function (state, _a) {
             var message = _a.message, context = _a.context, display = _a.display, timeout = _a.timeout;
             state.snackbar = {
                 message: message, context: context, display: display,
                 timeout: timeout || 3000
             };
         },
-        _a[mutation_types_1.UPDATE_VOUCHER] = function (state, voucher) {
+        _a[constants_1.UPDATE_VOUCHER] = function (state, voucher) {
             state.voucher = voucher;
         },
         _a),
     actions: {
         reset: function (_a) {
             var commit = _a.commit;
-            commit(mutation_types_1.RESET);
+            commit(constants_1.RESET);
         },
         updateSnackbar: function (_a, snackbar) {
             var commit = _a.commit;
-            commit(mutation_types_1.UPDATE_SNACKBAR, snackbar);
+            commit(constants_1.UPDATE_SNACKBAR, snackbar);
         },
         toggleSnackbar: function (_a, shouldDisplay) {
             var commit = _a.commit;
-            commit(mutation_types_1.TOGGLE_SNACKBAR, shouldDisplay);
+            commit(constants_1.TOGGLE_SNACKBAR, shouldDisplay);
         },
         checkCode: function (_a, code) {
             var commit = _a.commit;
-            commit(mutation_types_1.SET_LOADING, true);
+            commit(constants_1.SET_LOADING, true);
             setTimeout(function () {
-                commit(mutation_types_1.SET_LOADING, false);
+                commit(constants_1.SET_LOADING, false);
                 var voucher = data_1.default.filter(function (item) { return item.code === code; }).pop(); // fetch the voucher
                 if (!code || !voucher) {
-                    commit(mutation_types_1.UPDATE_SNACKBAR, { message: 'Aucun code trouvé', context: 'error', display: true });
+                    commit(constants_1.UPDATE_SNACKBAR, { message: 'Aucun code trouvé', context: 'error', display: true });
                 }
                 else {
-                    commit(mutation_types_1.UPDATE_VOUCHER, voucher);
+                    commit(constants_1.UPDATE_VOUCHER, voucher);
                 }
             }, 10);
         },
@@ -11987,8 +11937,8 @@ exports.default = new vuex_1.default.Store({
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
-                            commit(mutation_types_1.SET_LOADING, true);
-                            return [4 /*yield*/, extractCodeFromImage(file)];
+                            commit(constants_1.SET_LOADING, true);
+                            return [4 /*yield*/, utils_1.extractCodeFromImage(file)];
                         case 1:
                             code = _a.sent();
                             dispatch('checkCode', code);
@@ -12007,13 +11957,13 @@ var _a;
 /***/ (function(module, exports, __webpack_require__) {
 
 function injectStyle (ssrContext) {
-  __webpack_require__(56)
+  __webpack_require__(57)
 }
 var Component = __webpack_require__(3)(
   /* script */
   __webpack_require__(38),
   /* template */
-  __webpack_require__(53),
+  __webpack_require__(54),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -13144,10 +13094,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var vue_1 = __webpack_require__(1);
 var vue_class_component_1 = __webpack_require__(2);
 var vuex_class_1 = __webpack_require__(12);
-var PhotoUpload_vue_1 = __webpack_require__(47);
-var CodeInput_vue_1 = __webpack_require__(46);
-var VoucherInfos_vue_1 = __webpack_require__(49);
-var Snackbar_vue_1 = __webpack_require__(48);
+var PhotoUpload_vue_1 = __webpack_require__(48);
+var CodeInput_vue_1 = __webpack_require__(47);
+var VoucherInfos_vue_1 = __webpack_require__(50);
+var Snackbar_vue_1 = __webpack_require__(49);
 var App = (function (_super) {
     __extends(App, _super);
     function App() {
@@ -13227,6 +13177,9 @@ var CodeInput = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    CodeInput.prototype.onInput = function (value) {
+        this.code = value.toUpperCase();
+    };
     CodeInput.prototype.submit = function () {
         this.$emit('submit', this.code);
     };
@@ -13312,44 +13265,44 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var vue_1 = __webpack_require__(1);
 var vue_class_component_1 = __webpack_require__(2);
 var vuex_class_1 = __webpack_require__(12);
-var App = (function (_super) {
-    __extends(App, _super);
-    function App() {
+var SnackbarComponent = (function (_super) {
+    __extends(SnackbarComponent, _super);
+    function SnackbarComponent() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(App.prototype, "display", {
+    Object.defineProperty(SnackbarComponent.prototype, "display", {
         get: function () {
             return this.snackbar.display;
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(App.prototype, "timeout", {
+    Object.defineProperty(SnackbarComponent.prototype, "timeout", {
         get: function () {
             return this.snackbar.timeout || 3000;
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(App.prototype, "context", {
+    Object.defineProperty(SnackbarComponent.prototype, "context", {
         get: function () {
             return this.snackbar.context;
         },
         enumerable: true,
         configurable: true
     });
-    return App;
+    return SnackbarComponent;
 }(vue_1.default));
 __decorate([
     vuex_class_1.State
-], App.prototype, "snackbar", void 0);
+], SnackbarComponent.prototype, "snackbar", void 0);
 __decorate([
     vuex_class_1.Action
-], App.prototype, "toggleSnackbar", void 0);
-App = __decorate([
+], SnackbarComponent.prototype, "toggleSnackbar", void 0);
+SnackbarComponent = __decorate([
     vue_class_component_1.default
-], App);
-exports.default = App;
+], SnackbarComponent);
+exports.default = SnackbarComponent;
 
 
 /***/ }),
@@ -13429,6 +13382,20 @@ new vue_1.default({
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RESET = 'RESET';
+exports.SET_LOADING = 'SET_LOADING';
+exports.TOGGLE_SNACKBAR = 'TOGGLE_SNACKBAR';
+exports.UPDATE_SNACKBAR = 'UPDATE_SNACKBAR';
+exports.UPDATE_VOUCHER = 'UPDATE_VOUCHER';
+
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
 var data = [
     {
         code: '123',
@@ -13483,56 +13450,114 @@ exports.default = data;
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RESET = 'RESET';
-exports.SET_LOADING = 'SET_LOADING';
-exports.TOGGLE_SNACKBAR = 'TOGGLE_SNACKBAR';
-exports.UPDATE_SNACKBAR = 'UPDATE_SNACKBAR';
-exports.UPDATE_VOUCHER = 'UPDATE_VOUCHER';
-
-
-/***/ }),
-/* 46 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(3)(
-  /* script */
-  __webpack_require__(39),
-  /* template */
-  __webpack_require__(54),
-  /* styles */
-  null,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-
-exports.__esModule = true;
-exports["default"] = Component.exports
+var axios_1 = __webpack_require__(16);
+function extractCodeFromImage(file) {
+    return __awaiter(this, void 0, void 0, function () {
+        var url, data, params, headers, response, e_1, results, _i, _a, region, _b, _c, line, _d, _e, word, text, match;
+        return __generator(this, function (_f) {
+            switch (_f.label) {
+                case 0:
+                    url = 'https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/ocr';
+                    data = file;
+                    params = { language: "unk", detectOrientation: "true" };
+                    headers = {
+                        // 'Content-Type': 'application/json',
+                        'Content-Type': 'application/octet-stream',
+                        'Ocp-Apim-Subscription-Key': '120c13aa28944c9f8472bfbdc600c907'
+                    };
+                    _f.label = 1;
+                case 1:
+                    _f.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, axios_1.default.post(url, data, { params: params, headers: headers })];
+                case 2:
+                    response = _f.sent();
+                    return [3 /*break*/, 4];
+                case 3:
+                    e_1 = _f.sent();
+                    console.log('xxx', e_1);
+                    return [3 /*break*/, 4];
+                case 4:
+                    results = [];
+                    if (response) {
+                        for (_i = 0, _a = response.data.regions; _i < _a.length; _i++) {
+                            region = _a[_i];
+                            for (_b = 0, _c = region.lines; _b < _c.length; _b++) {
+                                line = _c[_b];
+                                for (_d = 0, _e = line.words; _d < _e.length; _d++) {
+                                    word = _e[_d];
+                                    results.push(word.text);
+                                }
+                            }
+                        }
+                    }
+                    text = results.join(' ');
+                    console.log('results>', text);
+                    match = text.match(/\/\/\/([0-9A-Z]+)\/\/\//g);
+                    if (match && match.length) {
+                        return [2 /*return*/, match.slice(-1)[0].replace(/\//g, '')];
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.extractCodeFromImage = extractCodeFromImage;
 
 
 /***/ }),
 /* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
-function injectStyle (ssrContext) {
-  __webpack_require__(55)
-}
 var Component = __webpack_require__(3)(
   /* script */
-  __webpack_require__(40),
+  __webpack_require__(39),
   /* template */
-  __webpack_require__(51),
+  __webpack_require__(55),
   /* styles */
-  injectStyle,
+  null,
   /* scopeId */
-  "data-v-39b6315a",
+  null,
   /* moduleIdentifier (server only) */
   null
 )
@@ -13545,15 +13570,18 @@ exports["default"] = Component.exports
 /* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
+function injectStyle (ssrContext) {
+  __webpack_require__(56)
+}
 var Component = __webpack_require__(3)(
   /* script */
-  __webpack_require__(41),
+  __webpack_require__(40),
   /* template */
   __webpack_require__(52),
   /* styles */
-  null,
+  injectStyle,
   /* scopeId */
-  null,
+  "data-v-39b6315a",
   /* moduleIdentifier (server only) */
   null
 )
@@ -13568,9 +13596,9 @@ exports["default"] = Component.exports
 
 var Component = __webpack_require__(3)(
   /* script */
-  __webpack_require__(42),
+  __webpack_require__(41),
   /* template */
-  __webpack_require__(50),
+  __webpack_require__(53),
   /* styles */
   null,
   /* scopeId */
@@ -13585,6 +13613,27 @@ exports["default"] = Component.exports
 
 /***/ }),
 /* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(3)(
+  /* script */
+  __webpack_require__(42),
+  /* template */
+  __webpack_require__(51),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+
+exports.__esModule = true;
+exports["default"] = Component.exports
+
+
+/***/ }),
+/* 51 */
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -13621,7 +13670,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 },staticRenderFns: []}
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -13641,7 +13690,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.chooseFile($event)
       }
     }
-  }, [_vm._v("Ouvrir l'appareil photo")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("Scannez le code promo")]), _vm._v(" "), _c('input', {
     ref: "fileInput",
     attrs: {
       "type": "file"
@@ -13653,7 +13702,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 },staticRenderFns: []}
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -13685,7 +13734,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 },staticRenderFns: []}
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -13736,7 +13785,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 },staticRenderFns: []}
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -13744,20 +13793,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "name": "code",
       "label": "Entrez le code promo",
+      "value": _vm.code,
       "rules": _vm.rules
+    },
+    on: {
+      "input": _vm.onInput
     },
     nativeOn: {
       "keyup": function($event) {
         if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
         _vm.submit($event)
       }
-    },
-    model: {
-      value: (_vm.code),
-      callback: function($$v) {
-        _vm.code = $$v
-      },
-      expression: "code"
     }
   }), _vm._v(" "), (_vm.codeCorrect) ? _c('v-btn', {
     staticClass: "green green--text",
@@ -13773,7 +13819,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 },staticRenderFns: []}
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -13786,7 +13832,7 @@ if(content.locals) module.exports = content.locals;
 var update = __webpack_require__(11)("c36fb8f0", content, true);
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -13799,7 +13845,7 @@ if(content.locals) module.exports = content.locals;
 var update = __webpack_require__(11)("734f3afe", content, true);
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports) {
 
 /**
@@ -13832,7 +13878,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -22660,7 +22706,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 //# sourceMappingURL=vuetify.js.map
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports) {
 
 var g;
